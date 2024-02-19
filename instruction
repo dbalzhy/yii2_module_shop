@@ -1,0 +1,40 @@
+============RabbitMQ============
+
+composer require php-amqplib/php-amqplib
+
+добавляем в компоненты
+'rabbitmq' => [
+        'class' => 'app\components\RabbitMQComponent',
+        'host' => 'localhost',
+        'port' => 5672,
+        'user' => 'guest',
+        'password' => 'guest',
+        'queue' => 'payment_notifications',
+    ],
+
+
+============YooKassa============
+
+composer require yoomoney/yookassa-sdk-php
+
+регистрируемся на yookassa, 
+получаем :
+shopId — ID магазина.
+secretKey — секретный ключ для проверки платежей.
+
+добавляем в компоненты
+'yookassa' => [
+        'class' => 'app\components\YooKassaComponent',
+        'shopId' => '',
+        'secretKey' => '',
+    ],
+
+===========Запуск воркера============
+
+php yii rabbitmq/consume
+
+Этот воркер будет слушать очередь payment_notifications и обрабатывать уведомления, 
+которые поступают от платежной системы. 
+В зависимости от статуса платежа он обновляет статус заказа в базе данных.   
+
+
